@@ -29,7 +29,6 @@ myApp.factory('socket', function ($rootScope) {
 
 // User logic
 myApp.controller('UserCtrl', ['$scope', 'socket', function($scope, socket) {
-	$scope.textstuff = "more stuff";
 	$scope.user_set = false;
 	$scope.users = [];
   $scope.scores = {};
@@ -68,8 +67,6 @@ myApp.controller('UserCtrl', ['$scope', 'socket', function($scope, socket) {
 
 // Game Logic
 myApp.controller('GameCtrl', ['$scope', 'socket', function($scope, socket) {
-  $scope.currentProblemId = -1;
-
   $scope.submitAnswer = function() {
     socket.emit('user:answer', {
       answer: $scope.user_answer
@@ -90,12 +87,32 @@ myApp.controller('GameCtrl', ['$scope', 'socket', function($scope, socket) {
 
   socket.on('response', function(data) {
     if(data.resp == "200") {
-        toastr.options.timeout = 3;
+      // do nothing
     } else {
-      alert('you got it wrong...');
+      count = 0;
     }
   });
 
 }]);
+
+// Blink Logic - this could probably be done a lot cleaner...
+count = 2;
+
+function initBlink()
+{
+
+    var state = false;
+    setInterval(function()
+        {
+            if(count < 2) {
+                state = !state;
+                var color = (state?'red':'white');
+                document.body.style.backgroundColor=color;
+                count++;
+            }
+        }, 100);
+}
+
+initBlink();
 
 

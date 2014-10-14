@@ -2,9 +2,8 @@
 	border: 2px solid black;
 }
 
-.col {
-	width: 30%;
-	padding: 10px;
+.container {
+	margin-top: 10%;
 }
 
 .left {
@@ -13,6 +12,7 @@
 
 ul {
 	list-style: none;
+	padding-left: 0;
 }
 
 li {
@@ -23,7 +23,11 @@ input {
 	text-align: center;
 }
 
-#question {
+.question {
 	font-size: 3em;
+}
+
+.response {
+	vertical-align: top;
 }
 

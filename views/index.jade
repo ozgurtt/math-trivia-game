@@ -5,13 +5,13 @@ html(ng-app='myApp')
 		script(src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js")
 		script(src="http://code.jquery.com/jquery-1.11.1.js")
 		script(type='text/javascript' src='js/app.js')
-		script(type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js")
 		link(rel="stylesheet" type="text/css" href="css/styles.css")
 		link(rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
-		link(rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css")
 
 	body
 		div(ng-controller='UserCtrl' class="container")
+			h1.text-center Math Trivia Game
+
 			div.row
 				div.span9.centered
 					.box.text-center(ng-show="!user_set")
@@ -19,14 +19,14 @@ html(ng-app='myApp')
 						form(ng-submit="doo()")
 							input(type="text", placeholder="your name", ng-model="textbox", class="form-control", id="username", autocomplete="off")
 					div.text-center(ng-show="user_set")
+						div(ng-controller='GameCtrl')
+							div.question {{question}}
+							form(ng-submit='submitAnswer()')
+								input#qanswer(type='text', ng-model='user_answer', class="form-control", autocomplete="off")
 						div.box
 							h3 Time until scores reset: {{time_left}}
 							h3 Scores
 							ul(ng-repeat="(key, value) in scores")
 								li {{key}} - {{value}}
-						div(ng-controller='GameCtrl')
-							div#question {{question}}
-							form(ng-submit='submitAnswer()')
-								input#qanswer(type='text', ng-model='user_answer', class="form-control", autocomplete="off")
 
 
