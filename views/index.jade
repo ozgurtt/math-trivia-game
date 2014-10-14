@@ -25,8 +25,7 @@ html(ng-app='myApp')
 								input#qanswer(type='text', ng-model='user_answer', class="form-control", autocomplete="off")
 						div.box
 							h3 Time until scores reset: {{time_left}}
-							h3 Scores
-							ul(ng-repeat="(key, value) in scores")
-								li {{key}} - {{value}}
+							ul(ng-repeat="score in scores")
+								li {{score.name}} - {{score.score}}
 
 

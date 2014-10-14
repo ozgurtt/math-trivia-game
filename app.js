@@ -19,19 +19,19 @@ app.get('/', function(req, res) {
 /* Helper vars */
 
 var i = 0;
-var question = "";
-var answer = 0;
+var _question = "";
+var _answer = 0;
 var scores = {};
 
 
 var updateQuestion = function() {
+	var ops = ["+", "-"];
 	var a = Math.floor((Math.random() * 20) + 1);
 	var b = Math.floor((Math.random() * 20) + 1);
-	var e = "+";
+	var e = Math.floor((Math.random() * ops.length));
 
-	question = a.toString() + e + b.toString();
-	answer = eval(question);
-	console.log(answer);
+	_question = a.toString() + ops[e]+ b.toString();
+	_answer = eval(_question);
 
 };
 
@@ -96,7 +96,7 @@ updateQuestion();
 io.on('connection', function(socket) {
 	console.log('new connection - ' + socket.id);
 	sendUserInfo(socket);
-	sendQuestion(socket, question);
+	sendQuestion(socket);
 
 	socket.on('server:add user', function(name) {
 		// TODO validate user name...
@@ -115,21 +115,21 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('user:answer', function(data) {
-		console.log(data.answer + " | " + answer);
-		if(data.answer == answer) {
-			sendResponse(socket, "200");
+		console.log(data.answer + " | " + _answer);
+		if(data.answer == _answer) {
 			var name = sockets.get(socket);
-			console.log("Someone got it right");
 			incrementScore(name);
 			sendScores(io);
 			updateQuestion();
-			sendQuestion(io, question);
-		} else {
-			sendResponse(socket, "500");
+			sendQuestion(io);
 		}
 	});
 
 });
+
+var sendData = function(recip, event, data) {
+	recip.emit(event, data);
+};
 
 var sendUserInfo = function(recip) {
 	recip.emit('client:user info', {
@@ -137,9 +137,10 @@ var sendUserInfo = function(recip) {
 	});
 };
 
-var sendQuestion = function(recip, q) {
+var sendQuestion = function(recip) {
 	recip.emit('question', {
-		question: q
+		question: _question,
+		answer: _answer
 	});
 };
 
@@ -149,24 +150,18 @@ var sendScores = function(recip) {
 	});
 };
 
+var sendData = function(recip, event, data) {
+	recip.emit('time', {
+		key: data
+	});
+};
+
 var incrementScore = function(key) {
 	if(isNaN(scores[key])) {
 		scores[key] = 1;
 	} else {
 		scores[key]++;
 	}
-};
-
-var sendResponse = function(recip, msg) {
-	recip.emit('response', {
-		resp: msg
-	});
-};
-
-var sendData = function(recip, event, msg) {
-	recip.emit(event, {
-		key: msg
-	});
 };
 
 

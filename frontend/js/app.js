@@ -41,6 +41,12 @@ myApp.controller('UserCtrl', ['$scope', 'socket', function($scope, socket) {
 	};
 
 	var nameOkay = function() {
+    var regex = /^[0-9A-Za-z_ ]+$/;
+
+    if(!regex.test($scope.textbox)) {
+      alert("Enter a valid name!");
+      return false;
+    }
 		return $scope.textbox.length >= 3 && $scope.users.indexOf($scope.textbox) == -1;
 	};
 
@@ -49,17 +55,17 @@ myApp.controller('UserCtrl', ['$scope', 'socket', function($scope, socket) {
 		console.log(data);
 	});
 
-  socket.on('info', function(data) {
-    console.log(data);
-  });
-
   socket.on('scores', function(data) {
-    console.log(data.scores);
-    $scope.scores = data.scores;
+    $scope.scores = [];
+    for(var key in data.scores) {
+      $scope.scores.push({name: key, score: data.scores[key]});
+    }
+    $scope.scores.sort(function(a,b) {
+      return b.score - a.score;
+    });
   });
 
   socket.on('time', function(data) {
-    console.log(data.key);
     $scope.time_left = data.key;
   });
 
@@ -68,29 +74,21 @@ myApp.controller('UserCtrl', ['$scope', 'socket', function($scope, socket) {
 // Game Logic
 myApp.controller('GameCtrl', ['$scope', 'socket', function($scope, socket) {
   $scope.submitAnswer = function() {
-    socket.emit('user:answer', {
-      answer: $scope.user_answer
-    });
-    $(document).ready(function(){
-      $('#qanswer').val('');
-    });
-  };
-
-  socket.on('user:correct', function(data) {
-    console.log(data.correct_user + ' was right');
-  });
-
-  socket.on('question', function(data) {
-    $scope.question = data.question;
-    console.log(data);
-  });
-
-  socket.on('response', function(data) {
-    if(data.resp == "200") {
-      // do nothing
+    if($scope.user_answer == $scope.answer) {
+      socket.emit('user:answer', {
+        answer: $scope.user_answer
+      });
     } else {
       count = 0;
     }
+    $('#qanswer').val('');
+
+  };
+
+  socket.on('question', function(data) {
+    $scope.question = data.question;
+    $scope.answer = data.answer;
+    console.log(data);
   });
 
 }]);
