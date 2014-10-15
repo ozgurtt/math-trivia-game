@@ -7,24 +7,26 @@ html(ng-app='myApp')
 		script(type='text/javascript' src='js/app.js')
 		link(rel="stylesheet" type="text/css" href="css/styles.css")
 		link(rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css")
+		link(rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Open+Sans")
+
 
 	body
 		div(ng-controller='UserCtrl' class="container")
-			h1.text-center Math Trivia Game
+			div.text-center.padded.logo Math Trivia Game
 
-			div.row
+			div.row.padded
 				div.span9.centered
-					.box.text-center(ng-show="!user_set")
-						p Please enter your name.
+					.box.text-center.padded(ng-show="!user_set")
+						p.padded Please enter your name.
 						form(ng-submit="doo()")
-							input(type="text", placeholder="your name", ng-model="textbox", class="form-control", id="username", autocomplete="off")
-					div.text-center(ng-show="user_set")
+							input(type="text", placeholder="your name", ng-model="textbox", class="form-control padded", id="username", autocomplete="off")
+					div.text-center.padded(ng-show="user_set")
 						div(ng-controller='GameCtrl')
-							div.question {{question}}
+							div.question.padded {{question}}
 							form(ng-submit='submitAnswer()')
-								input#qanswer(type='text', ng-model='user_answer', class="form-control", autocomplete="off")
-						div.box
-							h3 Time until scores reset: {{time_left}}
+								input#qanswer.padded(type='text', ng-model='user_answer', class="form-control", autocomplete="off")
+						div.box.padded
+							h3.padded Time until scores reset: {{time_left}}
 							ul(ng-repeat="score in scores")
 								li {{score.name}} - {{score.score}}
 

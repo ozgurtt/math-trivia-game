@@ -1,13 +1,20 @@
+* {
+	font-family: 'Open Sans', serif;
+}
+
 .box {
 	border: 2px solid black;
+	-webkit-border-radius: 30px;
+	-moz-border-radius: 30px;
+	border-radius: 30px;
+}
+
+.padded {
+	padding: 12px;
 }
 
 .container {
 	margin-top: 10%;
-}
-
-.left {
-	float: left;	
 }
 
 ul {
@@ -29,5 +36,11 @@ input {
 
 .response {
 	vertical-align: top;
+}
+
+.logo {
+	font-size: 4em;
+	font-weight: bold;
+	color: blue;
 }
 
